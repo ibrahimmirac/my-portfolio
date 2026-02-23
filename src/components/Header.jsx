@@ -1,11 +1,34 @@
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
 
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function Header() {
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, currentData } = useLanguage();
 
+const handleHireMe = async () => {
+  try {
+    await axios.post('https://jsonplaceholder.typicode.com/posts');
+    toast.success(currentData.hireSuccess, {
+      position: "top-right",
+      autoClose: 2000
+    });
+
+    setTimeout(() => {
+      window.location.href =
+        "mailto:ibrahimmiract@gmail.com?subject=Hiring%20Request";
+    }, 1100);
+
+  } catch (error) {
+    toast.error(currentData.hireError);
+  }
+};
+
   return (
+    
     <header className="pt-16">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
@@ -97,12 +120,12 @@ function Header() {
               </nav>
 
               {/* Hire me butonu*/}
-              <a
-                href="#contact"
+              <button
+                onClick={handleHireMe}
                 className="px-6 py-2 border-2 bg-white border-hd-hiretxt text-hd-hiretxt dark:bg-hd-hireback rounded-md hover:bg-hd-hiretxt hover:dark:bg-hd-hiretxt hover:text-white transition font-medium"
               >
                 {currentData.hireMe}
-              </a>
+            </button>
 
             </div>
 
